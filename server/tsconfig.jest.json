@@ -1,0 +1,11 @@
+// additional configuration needed to remove console warning
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // need to re-define the module resolution to prevent error when executing test
+    "module": "ESNext",
+    "moduleResolution": "nodenext",
+    // additional configuration needed to remove console warning
+    "isolatedModules": true
+  }
+}

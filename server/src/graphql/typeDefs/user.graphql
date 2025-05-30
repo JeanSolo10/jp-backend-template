@@ -1,0 +1,31 @@
+type User {
+  id: Int
+  email: String
+  name: String
+}
+
+input UserCreateInput {
+  name: String
+  email: EmailAddress!
+}
+
+input UserUpdateInput {
+  email: EmailAddress
+  name: String
+}
+
+input UserWhereUniqueInput {
+  id: Int
+  email: EmailAddress
+}
+
+type Mutation {
+  createUser(data: UserCreateInput!): User
+  updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput!): User
+  deleteUser(where: UserWhereUniqueInput!): User
+}
+
+type Query {
+  users: [User]
+  user(where: UserWhereUniqueInput!): User
+}

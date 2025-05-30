@@ -1,0 +1,25 @@
+services:
+  nginx:
+    ports:
+      - '3000:80'
+  nodejs-backend-server:
+    build:
+      context: .
+      target: build
+      args:
+        NODE_ENV: development
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./:/usr/app_name # needed to sync local files to docker files for development
+      - /usr/app_name/node_modules
+    working_dir: /usr/app_name
+    entrypoint: ['/bin/sh', '-c']
+    command:
+      - |
+        echo "Ensuring dependencies are installed in container volume..."
+        npm install
+        echo "Running migrations..."
+        npm run server:migrate
+        echo "Starting dev server..."
+        npm run server:dev
