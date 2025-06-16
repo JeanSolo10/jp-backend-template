@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "dotenvx run --env-file=../.env.production -- node ./dist/server.js",
-    "start:dev": "dotenvx run --env-file=../.env.development -- tsx watch ./src/server.ts",
-    "prisma:generate": "npx prisma generate",
-    "prisma:migrate": "npx prisma migrate dev",
+    "start": "node ./dist/server.js",
+    "start:dev": "tsx watch ./src/server.ts",
+    "env:load": "dotenvx run --env-file=../.env.${NODE_ENV:-development} --",
+    "prisma:generate": "npm run env:load -- npx prisma generate",
+    "prisma:migrate": "npm run env:load -- npx prisma migrate dev",
     "postinstall": "npx prisma generate",
     "test": "NODE_OPTIONS='--no-warnings --experimental-vm-modules' jest"
   },
