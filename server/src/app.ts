@@ -1,4 +1,6 @@
-import 'dotenv/config';
+import dotenvx from '@dotenvx/dotenvx';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import express, { Request, Response, Express, NextFunction } from 'express';
 import cors from 'cors';
 import registerRoutes from './routes/index.js';
@@ -14,6 +16,16 @@ import { dbService } from './config/dependencies.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
 const app: Express = express();
+
+// deteremine which .env file to load based on NODE_ENV
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ENV_FILE = `.env.${process.env.NODE_ENV || 'development'}`;
+const ENV_PATH = path.join(__dirname, '..', '..', ENV_FILE);
+
+dotenvx.config({
+  path: ENV_PATH,
+});
 
 // security middleware
 app.use(

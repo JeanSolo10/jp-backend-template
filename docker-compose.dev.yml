@@ -5,11 +5,12 @@ services:
   nodejs-backend-server:
     build:
       context: .
-      target: build
+      target: development
       args:
         NODE_ENV: development
     environment:
       - NODE_ENV=development
+      - DOTENV_KEY=${DOTENV_KEY}
     volumes:
       - ./:/usr/app_name # needed to sync local files to docker files for development
       - /usr/app_name/node_modules
@@ -17,8 +18,6 @@ services:
     entrypoint: ['/bin/sh', '-c']
     command:
       - |
-        echo "Ensuring dependencies are installed in container volume..."
-        npm install
         echo "Running migrations..."
         npm run server:migrate
         echo "Starting dev server..."

@@ -8,5 +8,13 @@ services:
       target: production
       args:
         NODE_ENV: production
-      environment:
-        - NODE_ENV=production
+    environment:
+      - NODE_ENV=production
+      - DOTENV_KEY=${DOTENV_KEY}
+    entrypoint: ['/bin/sh', '-c']
+    command:
+      - |
+        echo "Running migrations..."
+        npm run server:migrate
+        echo "Starting dev server..."
+        npm run server:start
