@@ -15,6 +15,6 @@ services:
     command:
       - |
         echo "Running migrations..."
-        npm run server:migrate
+        npm run server:deploy:migrate
         echo "Starting dev server..."
         npm run server:start

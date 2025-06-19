@@ -10,6 +10,7 @@
     "env:load": "dotenvx run --env-file=../.env.${NODE_ENV:-development} --",
     "prisma:generate": "npm run env:load -- npx prisma generate",
     "prisma:migrate": "npm run env:load -- npx prisma migrate dev",
+    "prisma:migrate:deploy": "npm run env:load -- npx prisma migrate deploy",
     "postinstall": "npx prisma generate",
     "test": "NODE_OPTIONS='--no-warnings --experimental-vm-modules' jest"
   },
