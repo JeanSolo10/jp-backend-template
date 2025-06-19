@@ -1,4 +1,5 @@
 # Environment variable files
+.env
 /*.env.*
 
 # Dependency directories
