@@ -39,7 +39,6 @@ COPY server/package.json ./server/
 
 # Copy all necessary artifacts from the builder stage
 COPY --from=builder /usr/app_name/node_modules ./node_modules
-COPY --from=builder /usr/app_name/server/node_modules ./server/node_modules
 COPY --from=builder /usr/app_name/server/dist ./server/dist
 COPY --from=builder /usr/app_name/server/src/graphql ./server/dist/graphql
 COPY --from=builder /usr/app_name/server/prisma ./server/prisma
