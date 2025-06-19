@@ -51,3 +51,4 @@ COPY --from=builder /usr/app_name/server/dist ./server/dist
 HEALTHCHECK --interval=5m --timeout=3s \
   CMD curl -f http://localhost:3000/health-check || exit 1
 
+CMD ["sh", "-c", "npm run server:migrate && npm run server:start"]
