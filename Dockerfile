@@ -36,6 +36,10 @@ ENV NODE_ENV=production
 
 COPY package*.json .
 COPY server/package.json ./server/
+# For a secure deployment, we COPY the encrypted file into the image.
+# We DO NOT COPY the .env.keys file.
+COPY .env.production .
+
 
 # Copy all necessary artifacts from the builder stage
 COPY --from=builder /usr/app_name/node_modules ./node_modules
