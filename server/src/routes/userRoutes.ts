@@ -55,7 +55,7 @@ export default function userRoutes(): Router {
   );
 
   router.get('/welcome', (req, res) => {
-    res.status(200).json({ msg: `Hello ${process.env.HELLO}` });
+    res.status(200).json({ msg: `Hello ${process.env.HELLO}!!` });
   });
 
   return router;
