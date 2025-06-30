@@ -54,5 +54,9 @@ export default function userRoutes(): Router {
     controllers.userController.deleteUser,
   );
 
+  router.get('/welcome', (req, res) => {
+    res.status(200).json({ msg: `Hello ${process.env.HELLO}` });
+  });
+
   return router;
 }
