@@ -6,6 +6,8 @@ services:
     depends_on:
       - nodejs-backend-server
   nodejs-backend-server:
+    build: .
+    image: jeansolo/nodejs-backend-server
     depends_on:
       - postgres_db
   postgres_db:
