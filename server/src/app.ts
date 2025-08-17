@@ -1,6 +1,3 @@
-import dotenvx from '@dotenvx/dotenvx';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import express, { Request, Response, Express, NextFunction } from 'express';
 import cors from 'cors';
 import registerRoutes from './routes/index.js';
@@ -14,19 +11,17 @@ import { apolloWinstonPlugin } from './graphql/plugins/apolloWinstonPlugin.js';
 import helmet from 'helmet';
 import { dbService } from './config/dependencies.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const app: Express = express();
-
-// deteremine which .env file to load based on NODE_ENV
+// dotenv config
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ENV_FILE = `.env.${process.env.NODE_ENV || 'development'}`;
-const ENV_PATH = path.join(__dirname, '..', '..', ENV_FILE);
+const envPath = path.join(__dirname, '..', '..', '.env');
+dotenv.config({ path: envPath });
 
-dotenvx.config({
-  path: ENV_PATH,
-});
-
+const app: Express = express();
 // security middleware
 app.use(
   helmet({

@@ -8,8 +8,10 @@ services:
       target: development
       args:
         NODE_ENV: development
+    env_file:
+      - .env
     environment:
-      - NODE_ENV=development
+      NODE_ENV: development
     volumes:
       - ./:/usr/app_name # needed to sync local files to docker files for development
       - /usr/app_name/node_modules
