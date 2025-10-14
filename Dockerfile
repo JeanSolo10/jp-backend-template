@@ -33,6 +33,8 @@ RUN npm run server:build
 FROM base AS production
 # argument for environment (ARG - available during build process | ENV - available in the container)
 ENV NODE_ENV=production
+# install postgresql client + curl for healthcheck
+RUN apk add --no-cache postgresql-client curl
 
 COPY package*.json .
 COPY server/package.json ./server/
@@ -48,7 +50,7 @@ RUN npm ci --only=production
 # copy dist files from build step
 COPY --from=builder /usr/app_name/server/dist ./server/dist
 
-HEALTHCHECK --interval=5m --timeout=3s \
+HEALTHCHECK --interval=2m --timeout=5s --start-period=30s --retries=3 \
   CMD curl -f http://localhost:3000/health-check || exit 1
-
-CMD ["sh", "-c", "npm run server:deploy:migrate && npm run server:start"]
+  
+CMD ["sh", "-c", "while ! pg_isready -h postgres_db -p 5432 -q -U $POSTGRES_USER; do echo 'Waiting for database to be ready...'; sleep 2; done; echo 'Database is ready!'; npm run server:deploy:migrate && npm run server:start"]
