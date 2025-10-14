@@ -1,16 +1,83 @@
+# specifying version as docker swarm mode uses legacy version of docker compose
+version: '3.8'
 services:
   nginx:
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - backend
     ports:
       - '80:80'
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
   nodejs-backend-server:
     build:
       context: .
       target: production
       args:
         NODE_ENV: production
+    image: jeansolo/nodejs-backend-server:latest
+    networks:
+      - backend
     env_file:
       - .env
     environment:
       NODE_ENV: production
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  postgres_db:
+    image: postgres:16.8
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: always
+    secrets:
+      - db-user
+      - db-password
+      - db-name
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db-user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+      POSTGRES_DB_FILE: /run/secrets/db-name
+      PGUSER_FILE: /run/secrets/db-user
+    deploy:
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - 'node.role==manager'
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U $$(cat /run/secrets/db-user) -d $$(cat /run/secrets/db-name)',
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  postgres-db:
+
+networks:
+  backend:
+
+secrets:
+  db-user:
+    external: true
+  db-password:
+    external: true
+  db-name:
+    external: true
