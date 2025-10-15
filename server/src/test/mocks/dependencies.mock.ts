@@ -14,18 +14,8 @@ const mockFunctionGenericHandler = jest
   .fn<() => void>()
   .mockImplementation(() => {});
 
-// For Controllers
-const mockControllerGenericHandler = jest.fn((req: Request, res: Response) => {
-  res
-    .status(501)
-    .json({ message: 'Mocked Controller handler: Not implemented' });
-});
-// For Services
-const mockServiceGenericHandler = jest
-  .fn<() => Promise<ReturnMessage>>()
-  .mockResolvedValue({ message: 'Mocked service handler: Not Implemented' });
 // For GraphQl Services
-const mockServiceGraphqlGenericHandler = jest
+const mockServiceGenericHandler = jest
   .fn<() => Promise<ReturnMessage>>()
   .mockResolvedValue({
     message: 'Mocked GraphQlService handler: Not Implemented',
@@ -39,31 +29,13 @@ export const mockDependenciesObject = {
     disconnect: mockFunctionGenericHandler,
     useModel: mockFunctionGenericHandler,
   },
-  controllers: {
-    userController: {
-      getUserById: mockControllerGenericHandler,
-      getUserByEmail: mockControllerGenericHandler,
-      getAllUSers: mockControllerGenericHandler,
-      updateUser: mockControllerGenericHandler,
-      createUser: mockControllerGenericHandler,
-      deleteUser: mockControllerGenericHandler,
-    },
-  },
   services: {
     userService: {
-      getUserById: mockServiceGenericHandler,
-      getUserByEmail: mockServiceGenericHandler,
-      getAllUsers: mockServiceGenericHandler,
+      getUser: mockServiceGenericHandler,
+      getUsers: mockServiceGenericHandler,
       createUser: mockServiceGenericHandler,
       updateUser: mockServiceGenericHandler,
       deleteUser: mockServiceGenericHandler,
-    },
-    userServiceGraphql: {
-      getUser: mockServiceGraphqlGenericHandler,
-      getUsers: mockServiceGraphqlGenericHandler,
-      createUser: mockServiceGraphqlGenericHandler,
-      updateUser: mockServiceGraphqlGenericHandler,
-      deleteUser: mockServiceGraphqlGenericHandler,
     },
   },
 };
