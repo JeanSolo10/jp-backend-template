@@ -9,21 +9,21 @@ import {
 export const UserResolver = {
   Query: {
     user: (_: undefined, args: UserArgs) => {
-      return services.userServiceGraphql.getUser(args.where);
+      return services.userService.getUser(args.where);
     },
     users: () => {
-      return services.userServiceGraphql.getUsers();
+      return services.userService.getUsers();
     },
   },
   Mutation: {
     createUser: (_: undefined, args: CreateUserArgs) => {
-      return services.userServiceGraphql.createUser(args);
+      return services.userService.createUser(args);
     },
     updateUser: (_: undefined, args: UpdateUserArgs) => {
-      return services.userServiceGraphql.updateUser(args);
+      return services.userService.updateUser(args);
     },
     deleteUser: (_: undefined, args: DeleteUserArgs) => {
-      return services.userServiceGraphql.deleteUser(args.where);
+      return services.userService.deleteUser(args.where);
     },
   },
 };
